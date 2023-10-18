@@ -2,8 +2,6 @@
 
 mergemap is a Go library to recursively merge JSON maps.
 
-[![Build Status](https://drone.io/github.com/peterbourgon/mergemap/status.png)](https://drone.io/github.com/peterbourgon/mergemap/latest)
-
 
 ## Behavior
 
