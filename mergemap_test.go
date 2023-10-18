@@ -3,6 +3,7 @@ package mergemap
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -86,4 +87,30 @@ func assert(t *testing.T, expected, got map[string]interface{}) {
 		t.Errorf("expected %s, got %s", string(expectedBuf), string(gotBuf))
 		return
 	}
+}
+
+func BenchmarkMapify(b *testing.B) {
+	k := 100000
+
+	m := make(map[string]interface{}, k)
+	for i := 0; i < k; i++ {
+		m[fmt.Sprintf("long%d", i)] = "storyshort"
+	}
+
+	c := make(map[string]string, k)
+	for i := 0; i < k; i++ {
+		c[fmt.Sprintf("long%d", i)] = "storyshort"
+	}
+
+	b.Run("Map interface", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			mapify(m)
+		}
+	})
+
+	b.Run("Map string", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			mapify(c)
+		}
+	})
 }

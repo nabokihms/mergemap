@@ -32,9 +32,14 @@ func merge(dst, src map[string]interface{}, depth int) map[string]interface{} {
 }
 
 func mapify(i interface{}) (map[string]interface{}, bool) {
+	m, ok := i.(map[string]interface{})
+	if ok {
+		return m, true
+	}
+
 	value := reflect.ValueOf(i)
 	if value.Kind() == reflect.Map {
-		m := map[string]interface{}{}
+		m := make(map[string]interface{}, value.Len())
 		for _, k := range value.MapKeys() {
 			m[k.String()] = value.MapIndex(k).Interface()
 		}
